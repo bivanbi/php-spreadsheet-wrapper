@@ -56,7 +56,7 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
 
         foreach ($cellIterator as $index => $cell) {
             $name = $cell->getValue();
-            $this->columnMap[$index] = $name;
+            $this->columnMap[$name] = $index;
         }
     }
 

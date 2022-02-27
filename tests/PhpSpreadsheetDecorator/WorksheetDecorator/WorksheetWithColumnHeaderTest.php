@@ -50,6 +50,6 @@ class WorksheetWithColumnHeaderTest extends TestCase
     public function testGetColumnMap_withValidHeaderRow()
     {
         $actual = $this->worksheet->getColumnMap();
-        $this->assertEquals(self::COLUMNS, $actual);
+        $this->assertEquals(array_flip(self::COLUMNS), $actual);
     }
 }
