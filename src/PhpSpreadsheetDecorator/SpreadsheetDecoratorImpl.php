@@ -2,8 +2,8 @@
 
 namespace KignOrg\PhpSpreadsheetDecorator;
 
-use KignOrg\PhpSpreadSheetDecorator\WorksheetDecorator\WorksheetWithColumnHeader;
-use KignOrg\PhpSpreadSheetDecorator\WorksheetDecorator\WorksheetWithColumnHeaderImpl;
+use KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator\WorksheetWithColumnHeader;
+use KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator\WorksheetWithColumnHeaderImpl;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class SpreadsheetDecoratorImpl extends Spreadsheet implements SpreadsheetDecorator
@@ -19,6 +19,5 @@ class SpreadsheetDecoratorImpl extends Spreadsheet implements SpreadsheetDecorat
     public function getWorksheetWithColumnHeader(string $name): WorksheetWithColumnHeader
     {
         return new WorksheetWithColumnHeaderImpl($this->spreadsheet->getSheetByName($name));
-        // TODO: Implement getWorksheetWithColumnHeader() method.
     }
 }
