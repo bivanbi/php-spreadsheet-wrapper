@@ -2,7 +2,7 @@
 
 namespace KignOrg\PhpSpreadsheetDecorator;
 
-use KignOrg\PhpSpreadSheetDecorator\WorksheetDecorator\WorksheetWithColumnHeader;
+use KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator\WorksheetWithColumnHeader;
 
 interface SpreadsheetDecorator
 {

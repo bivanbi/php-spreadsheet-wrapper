@@ -2,7 +2,13 @@
 
 namespace KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator;
 
-interface RowIteratorWithColumnName
+use Iterator;
+use PhpOffice\PhpSpreadsheet\Worksheet\Row;
+
+/**
+ * @implements Iterator<int, Row>
+ */
+interface RowIteratorWithColumnName extends Iterator
 {
-    public function lo();
+    public function current(): RowWithColumnName;
 }

@@ -2,6 +2,7 @@
 
 namespace KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator;
 
+use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -10,7 +11,6 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
     protected Worksheet $worksheet;
     protected int $headerRow = 1;
     protected int $firstDataRow = 2;
-    protected ?int $lastDataRow = null;
 
     protected array $columnMap = [];
 
@@ -18,6 +18,11 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
     {
         parent::__construct($worksheet->getParent(), $worksheet->getTitle());
         $this->worksheet = $worksheet;
+    }
+
+    public function getWorksheet(): Worksheet
+    {
+        return $this->worksheet;
     }
 
     public function setHeaderRow(int $row): WorksheetWithColumnHeader
@@ -33,11 +38,6 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
         return $this;
     }
 
-    public function setLastDataRow(?int $row): WorksheetWithColumnHeader
-    {
-        $this->lastDataRow = $row;
-        return $this;
-    }
 
     public function getColumnMap(): array
     {
@@ -45,6 +45,29 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
             $this->initColumnMap();
         }
         return $this->columnMap;
+    }
+
+    public function getColumnName(string $columnIndex): string
+    {
+        $this->exceptOnInvalidColumnIndex($columnIndex);
+        return array_search($columnIndex, $this->getColumnMap());
+    }
+
+    public function getRowIterator($startRow = null, $endRow = null): RowIteratorWithColumnName
+    {
+        return new RowIteratorWithColumnNameImpl($this, ($startRow ?? $this->firstDataRow), $endRow);
+    }
+
+    public function getCellByColumnNameAndRow(string $columnName, int $rowIndex): Cell
+    {
+        $this->exceptOnColumnNameNotFound($columnName);
+        return $this->worksheet->getCell($this->getColumnIndex($columnName) . $rowIndex);
+    }
+
+    public function getColumnIndex(string $columnName): string
+    {
+        $this->exceptOnColumnNameNotFound($columnName);
+        return $this->getColumnMap()[$columnName];
     }
 
     protected function initColumnMap()
@@ -56,20 +79,34 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
 
         foreach ($cellIterator as $index => $cell) {
             $name = $cell->getValue();
+            $this->exceptOnExistingColumnName($name);
             $this->columnMap[$name] = $index;
         }
     }
 
-    public function getRowIteratorWithColumnName($startRow = 1, $endRow = null): RowIteratorWithColumnName
+    protected function exceptOnColumnNameNotFound(string $columnName): void
     {
-        // TODO: Implement getRowIteratorWithColumnName() method.
-        return new RowIteratorWithColumnNameImpl();
+        if (!array_key_exists($columnName, $this->getColumnMap())) {
+            throw new InvalidArgumentException('Column name not found');
+        }
     }
 
-    public function getCellByColumnNameAndRow(string $column, int $row): Cell
+    protected function exceptOnInvalidColumnIndex(string $columnIndex): void
     {
-        // TODO: Implement getCellByColumnNameAndRow() method.
-        $columnId = "A";
-        return parent::getCellByColumnAndRow(1, $row);
+        if (!$this->isValidColumnIndex($columnIndex)) {
+            throw new InvalidArgumentException('No column name found for index');
+        }
+    }
+
+    protected function exceptOnExistingColumnName(string $columnName): void
+    {
+        if (array_key_exists($columnName, ($this->columnMap ?? []))) {
+            throw new InvalidArgumentException('Duplicate column name');
+        }
+    }
+
+    public function isValidColumnIndex(string $columnIndex): bool
+    {
+        return in_array($columnIndex, $this->getColumnMap()) !== false;
     }
 }
