@@ -23,9 +23,9 @@ class RowWithColumnNameImpl implements RowWithColumnName
         $cellIterator = $this->getCellIterator();
         $cellIterator->setIterateOnlyExistingCells(true);
 
-        foreach ($cellIterator as $columnIndex => $cell) {
-            if ($this->worksheetWithColumnHeader->isValidColumnIndex($columnIndex)) {
-                $columnName = $this->worksheetWithColumnHeader->getColumnName($columnIndex);
+        foreach ($cellIterator as $columnAddress => $cell) {
+            if ($this->worksheetWithColumnHeader->isValidColumnAddress($columnAddress)) {
+                $columnName = $this->worksheetWithColumnHeader->getColumnNameByAddress($columnAddress);
                 $rowArray[$columnName] = $cell->getValue();
             }
         }

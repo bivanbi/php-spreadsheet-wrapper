@@ -15,13 +15,21 @@ interface WorksheetWithColumnHeader
 
     public function getColumnMap(): array;
 
-    public function getColumnIndex(string $columnName): string;
+    public function getColumnAddressByName(string $columnName): string;
 
-    public function getColumnName(string $columnIndex): string;
+    public function getColumnNameByAddress(string $columnAddress): string;
 
     public function getRowIterator($startRow = null, $endRow = null): RowIteratorWithColumnName;
 
     public function getCellByColumnNameAndRow(string $columnName, int $rowIndex): Cell;
 
-    public function isValidColumnIndex(string $columnIndex): bool;
+    public function isValidColumnAddress(string $columnAddress): bool;
+
+    /**
+     * @param string $columnName
+     * @param string|null $atIndex index of column explicitly. Defaults to first unused (column without header) if not set
+     */
+    public function addColumn(string $columnName, string $atIndex = null): void;
+
+    //public function getFirstColumnIndexWithoutHeader(): string;
 }

@@ -47,10 +47,10 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
         return $this->columnMap;
     }
 
-    public function getColumnName(string $columnIndex): string
+    public function getColumnNameByAddress(string $columnAddress): string
     {
-        $this->exceptOnInvalidColumnIndex($columnIndex);
-        return array_search($columnIndex, $this->getColumnMap());
+        $this->exceptOnInvalidColumnAddress($columnAddress);
+        return array_search($columnAddress, $this->getColumnMap());
     }
 
     public function getRowIterator($startRow = null, $endRow = null): RowIteratorWithColumnName
@@ -61,10 +61,10 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
     public function getCellByColumnNameAndRow(string $columnName, int $rowIndex): Cell
     {
         $this->exceptOnColumnNameNotFound($columnName);
-        return $this->worksheet->getCell($this->getColumnIndex($columnName) . $rowIndex);
+        return $this->worksheet->getCell($this->getColumnAddressByName($columnName) . $rowIndex);
     }
 
-    public function getColumnIndex(string $columnName): string
+    public function getColumnAddressByName(string $columnName): string
     {
         $this->exceptOnColumnNameNotFound($columnName);
         return $this->getColumnMap()[$columnName];
@@ -91,9 +91,9 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
         }
     }
 
-    protected function exceptOnInvalidColumnIndex(string $columnIndex): void
+    protected function exceptOnInvalidColumnAddress(string $columnAddress): void
     {
-        if (!$this->isValidColumnIndex($columnIndex)) {
+        if (!$this->isValidColumnAddress($columnAddress)) {
             throw new InvalidArgumentException('No column name found for index');
         }
     }
@@ -105,8 +105,8 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
         }
     }
 
-    public function isValidColumnIndex(string $columnIndex): bool
+    public function isValidColumnAddress(string $columnAddress): bool
     {
-        return in_array($columnIndex, $this->getColumnMap()) !== false;
+        return in_array($columnAddress, $this->getColumnMap()) !== false;
     }
 }

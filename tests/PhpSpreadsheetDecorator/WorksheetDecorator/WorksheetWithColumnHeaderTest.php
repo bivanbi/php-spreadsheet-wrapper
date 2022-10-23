@@ -58,22 +58,22 @@ class WorksheetWithColumnHeaderTest extends TestCase
         }
     }
 
-    public function testGetColumnName_withInvalidIndex()
+    public function testGetColumnNameByAddress_withInvalidAddress()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->worksheet->getColumnName('Z');
+        $this->worksheet->getColumnNameByAddress('Z');
     }
 
-    public function testGetColumnIndex_withInvalidName()
+    public function testGetColumnAddressByName_withInvalidName()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->worksheet->getColumnIndex("NON-existing-column-name");
+        $this->worksheet->getColumnAddressByName("NON-existing-column-name");
     }
 
-    public function testGetColumnIndex_withValidName()
+    public function testGetColumnAddressByName_withValidName()
     {
-        foreach (TestConstants::HEADER_COLUMNS as $columnIndex => $columnName) {
-            self::assertEquals($columnIndex, $this->worksheet->getColumnIndex($columnName));
+        foreach (TestConstants::HEADER_COLUMNS as $ColumnAddress => $columnName) {
+            self::assertEquals($ColumnAddress, $this->worksheet->getColumnAddressByName($columnName));
         }
     }
 
