@@ -4,6 +4,8 @@ namespace KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator;
 
 use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithColumnHeader
@@ -12,7 +14,7 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
     protected int $headerRow = 1;
     protected int $firstDataRow = 2;
 
-    protected array $columnMap = [];
+    protected ?array $columnMap = null;
 
     public function __construct(Worksheet $worksheet)
     {
@@ -28,7 +30,7 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
     public function setHeaderRow(int $row): WorksheetWithColumnHeader
     {
         $this->headerRow = $row;
-        $this->columnMap = [];
+        $this->invalidateCache();
         return $this;
     }
 
@@ -41,7 +43,7 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
 
     public function getColumnMap(): array
     {
-        if (sizeof($this->columnMap) === 0) {
+        if (is_null($this->columnMap)) {
             $this->initColumnMap();
         }
         return $this->columnMap;
@@ -108,5 +110,58 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
     public function isValidColumnAddress(string $columnAddress): bool
     {
         return in_array($columnAddress, $this->getColumnMap()) !== false;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function addColumn(string $columnName, string $columnAddress = null): void
+    {
+        $columnAddress = $this->getFirstColumnAddressWithoutHeader();
+        print('First unused column address: ' . $columnAddress . PHP_EOL);
+        $this->worksheet->setCellValue($columnAddress . $this->headerRow, $columnName);
+        $this->invalidateCache();
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function getFirstColumnAddressWithoutHeader(): string
+    {
+        $columnIndex = $this->getFirstColumnIndexWithoutHeader();
+        return Coordinate::stringFromColumnIndex($columnIndex);
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function getFirstColumnIndexWithoutHeader(): string
+    {
+        return $this->getFirstMissingIndex($this->getColumnNameToIndexMap());
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function getColumnNameToIndexMap(): array
+    {
+        $result = [];
+        foreach ($this->getColumnMap() as $name => $address) {
+            $result[$name] = Coordinate::columnIndexFromString($address);
+        }
+        return $result;
+    }
+
+    protected function getFirstMissingIndex(array $indices): int
+    {
+        sort($indices);
+        /** @noinspection PhpStatementHasEmptyBodyInspection */
+        for ($i = 1; in_array($i, $indices); $i++) ;
+        return $i;
+    }
+
+    protected function invalidateCache(): void
+    {
+        $this->columnMap = null;
     }
 }

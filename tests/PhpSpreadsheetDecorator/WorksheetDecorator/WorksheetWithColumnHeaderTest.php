@@ -41,9 +41,7 @@ class WorksheetWithColumnHeaderTest extends TestCase
 
     public function testGetColumnMap_withInterleavedHeader()
     {
-        $worksheet = $this->spreadsheet->getWorksheetWithColumnHeader(TestConstants::COLUMN_HEADER_WITH_INTERLEAVE_TEST_WORKSHEET_NAME);
-        $worksheet->setHeaderRow(TestConstants::HEADER_ROW);
-        $worksheet->setFirstDataRow(TestConstants::FIRST_DATA_ROW);
+        $worksheet = $this->getColumnHeaderWorksheetWithInterleave();
         $actual = $worksheet->getColumnMap();
         $this->assertEquals(array_flip(TestConstants::HEADER_COLUMNS_WITH_INTERLEAVE), $actual);
     }
@@ -89,6 +87,26 @@ class WorksheetWithColumnHeaderTest extends TestCase
 
     public function testAddColumn_viaAddColumnMethod()
     {
-        $this->worksheet->addColumn("New Column");
+        $expectedColumnMap = array_merge(TestConstants::HEADER_COLUMNS, ['E' => 'New Column']);
+        $this->worksheet->addColumn($expectedColumnMap['E']);
+        $actualColumnMap = $this->worksheet->getColumnMap();
+        self::assertEquals(array_flip($expectedColumnMap), $actualColumnMap);
+    }
+
+    public function testAddColumn_viaAddColumnMethod_withInterleavedHeader()
+    {
+        $worksheet = $this->getColumnHeaderWorksheetWithInterleave();
+        $expectedColumnMap = array_merge(TestConstants::HEADER_COLUMNS, ['B' => 'New Column']);
+        $worksheet->addColumn($expectedColumnMap['B']);
+        $actualColumnMap = $worksheet->getColumnMap();
+        self::assertEquals(array_flip($expectedColumnMap), $actualColumnMap);
+    }
+
+    private function getColumnHeaderWorksheetWithInterleave(): WorksheetWithColumnHeader
+    {
+        $worksheet = $this->spreadsheet->getWorksheetWithColumnHeader(TestConstants::COLUMN_HEADER_WITH_INTERLEAVE_TEST_WORKSHEET_NAME);
+        $worksheet->setHeaderRow(TestConstants::HEADER_ROW);
+        $worksheet->setFirstDataRow(TestConstants::FIRST_DATA_ROW);
+        return $worksheet;
     }
 }

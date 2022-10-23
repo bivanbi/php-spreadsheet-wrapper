@@ -26,10 +26,12 @@ interface WorksheetWithColumnHeader
     public function isValidColumnAddress(string $columnAddress): bool;
 
     /**
+     * Add a new column with column name. This will be written to the cell specified by
+     * columnAddress + header row. Parameter columnAddress defaults to the first column
+     * address that has an empty cell in header row.
+     *
      * @param string $columnName
-     * @param string|null $atIndex index of column explicitly. Defaults to first unused (column without header) if not set
+     * @param string|null $columnAddress
      */
-    public function addColumn(string $columnName, string $atIndex = null): void;
-
-    //public function getFirstColumnIndexWithoutHeader(): string;
+    public function addColumn(string $columnName, string $columnAddress = null): void;
 }
