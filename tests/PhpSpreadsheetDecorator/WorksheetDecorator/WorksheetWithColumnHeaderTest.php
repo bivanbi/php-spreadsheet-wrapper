@@ -39,6 +39,15 @@ class WorksheetWithColumnHeaderTest extends TestCase
         $this->assertEquals(array_flip(TestConstants::HEADER_COLUMNS), $actual);
     }
 
+    public function testGetColumnMap_withInterleavedHeader()
+    {
+        $worksheet = $this->spreadsheet->getWorksheetWithColumnHeader(TestConstants::COLUMN_HEADER_WITH_INTERLEAVE_TEST_WORKSHEET_NAME);
+        $worksheet->setHeaderRow(TestConstants::HEADER_ROW);
+        $worksheet->setFirstDataRow(TestConstants::FIRST_DATA_ROW);
+        $actual = $worksheet->getColumnMap();
+        $this->assertEquals(array_flip(TestConstants::HEADER_COLUMNS_WITH_INTERLEAVE), $actual);
+    }
+
     public function testRowIterator()
     {
         $rowIterator = $this->worksheet->getRowIterator();
@@ -76,5 +85,10 @@ class WorksheetWithColumnHeaderTest extends TestCase
                 self::assertEquals($expectedValue, $cell->getValue());
             }
         }
+    }
+
+    public function testAddColumn_viaAddColumnMethod()
+    {
+        $this->worksheet->addColumn("New Column");
     }
 }

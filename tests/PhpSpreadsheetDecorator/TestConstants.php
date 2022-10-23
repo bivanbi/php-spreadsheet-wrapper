@@ -20,6 +20,12 @@ class TestConstants
         'D' => 'Occupation',
     ];
 
+    const HEADER_COLUMNS_WITH_INTERLEAVE = [
+        'A' => 'Name',
+        'C' => 'Home Country',
+        'D' => 'Occupation',
+    ];
+
     const COLUMN_HEADER_TEST_SHEET_EXPECTED_CONTENT = [
         2 => ['Name' => 'Barbara', 'Age' => 19, 'Home Country' => 'Germany', 'Occupation' => 'University Student'],
         3 => ['Name' => 'Emmylou', 'Age' => 24, 'Home Country' => 'Netherlands', 'Occupation' => 'Writer'],
