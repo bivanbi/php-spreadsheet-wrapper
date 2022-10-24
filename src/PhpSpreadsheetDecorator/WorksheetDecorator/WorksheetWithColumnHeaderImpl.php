@@ -8,7 +8,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithColumnHeader
+class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
 {
     protected Worksheet $worksheet;
     protected int $headerRow = 1;
@@ -18,7 +18,6 @@ class WorksheetWithColumnHeaderImpl extends Worksheet implements WorksheetWithCo
 
     public function __construct(Worksheet $worksheet)
     {
-        parent::__construct($worksheet->getParent(), $worksheet->getTitle());
         $this->worksheet = $worksheet;
     }
 

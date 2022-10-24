@@ -7,13 +7,12 @@ use KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator\WorksheetWithColumnHeader
 use KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator\WorksheetWithColumnHeaderImpl;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class SpreadsheetDecoratorImpl extends Spreadsheet implements SpreadsheetDecorator
+class SpreadsheetDecoratorImpl implements SpreadsheetDecorator
 {
     protected Spreadsheet $spreadsheet;
 
     public function __construct(Spreadsheet $spreadsheet)
     {
-        parent::__construct();
         $this->spreadsheet = $spreadsheet;
     }
 
