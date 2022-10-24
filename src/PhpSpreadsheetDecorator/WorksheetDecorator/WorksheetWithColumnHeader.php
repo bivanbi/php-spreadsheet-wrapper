@@ -26,6 +26,17 @@ interface WorksheetWithColumnHeader
     public function isValidColumnAddress(string $columnAddress): bool;
 
     /**
+     * Update multiple cells in a row at once.
+     * Only columns in $values array will be updated.
+     *
+     * @param int $rowIndex the index of the row to be updated
+     * @param array $values array of column name - values
+     */
+    public function updateRow(int $rowIndex, array $values): void;
+
+    public function setCellValue(string $columnName, int $rowIndex, mixed $value = null): void;
+
+    /**
      * Add a new column with column name. This will be written to the cell specified by
      * columnAddress + header row. Parameter columnAddress defaults to the first column
      * address that has an empty cell in header row.

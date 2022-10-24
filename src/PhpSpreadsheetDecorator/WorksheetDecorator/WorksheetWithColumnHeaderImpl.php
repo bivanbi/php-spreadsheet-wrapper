@@ -15,6 +15,7 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
     protected int $firstDataRow = 2;
 
     protected ?array $columnMap = null;
+    protected ?array $columnNameToIndexMap = null;
 
     public function __construct(Worksheet $worksheet)
     {
@@ -38,7 +39,6 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
         $this->firstDataRow = $row;
         return $this;
     }
-
 
     public function getColumnMap(): array
     {
@@ -124,6 +124,26 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
     /**
      * @throws Exception
      */
+    public function updateRow(int $rowIndex, array $values): void
+    {
+        foreach ($values as $columnName => $value) {
+            $this->setCellValue($columnName, $rowIndex, $value);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setCellValue(string $columnName, int $rowIndex, mixed $value = null): void
+    {
+        $this->exceptOnColumnNameNotFound($columnName);
+        $map = $this->getColumnNameToIndexMap();
+        $this->getWorksheet()->setCellValueByColumnAndRow($map[$columnName], $rowIndex, $value);
+    }
+
+    /**
+     * @throws Exception
+     */
     protected function getFirstColumnAddressWithoutHeader(): string
     {
         $columnIndex = $this->getFirstColumnIndexWithoutHeader();
@@ -143,11 +163,21 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
      */
     protected function getColumnNameToIndexMap(): array
     {
-        $result = [];
-        foreach ($this->getColumnMap() as $name => $address) {
-            $result[$name] = Coordinate::columnIndexFromString($address);
+        if (is_null($this->columnNameToIndexMap)) {
+            $this->initColumnNameToIndexMap();
         }
-        return $result;
+        return $this->columnNameToIndexMap;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function initColumnNameToIndexMap(): void
+    {
+        $this->columnNameToIndexMap = [];
+        foreach ($this->getColumnMap() as $name => $address) {
+            $this->columnNameToIndexMap[$name] = Coordinate::columnIndexFromString($address);
+        }
     }
 
     protected function getFirstMissingIndex(array $indices): int
@@ -161,5 +191,6 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
     protected function invalidateCache(): void
     {
         $this->columnMap = null;
+        $this->columnNameToIndexMap = null;
     }
 }

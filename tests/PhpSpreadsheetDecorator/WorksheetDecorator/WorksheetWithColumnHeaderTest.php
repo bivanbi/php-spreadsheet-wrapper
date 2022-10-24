@@ -106,6 +106,29 @@ class WorksheetWithColumnHeaderTest extends TestCase
         self::assertEquals(array_flip($expectedColumnMap), $actualColumnMap);
     }
 
+    public function testUpdateRow_withInvalidColumnName()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $worksheet = $this->getWorksheet(TestConstants::COLUMN_HEADER_WITH_NO_DATA_ROWS_TEST_WORKSHEET_NAME);
+        $rowIndex = TestConstants::FIRST_DATA_ROW;
+        $worksheet->updateRow($rowIndex, ['invalid header' => 'some data']);
+    }
+
+    public function testUpdateRow_withValidData()
+    {
+        $worksheet = $this->getWorksheet(TestConstants::COLUMN_HEADER_WITH_NO_DATA_ROWS_TEST_WORKSHEET_NAME);
+        foreach (TestConstants::COLUMN_HEADER_TEST_SHEET_EXPECTED_CONTENT as $rowIndex => $rowData) {
+            $worksheet->updateRow($rowIndex, $rowData);
+        }
+
+        $rowIterator = $worksheet->getRowIterator();
+        foreach ($rowIterator as $row) {
+            $expected = TestConstants::COLUMN_HEADER_TEST_SHEET_EXPECTED_CONTENT[$row->getRowIndex()];
+            $actual = $row->asArray();
+            self::assertEquals($expected, $actual);
+        }
+    }
+
     private function getWorksheet(string $worksheetName): WorksheetWithColumnHeader
     {
         $worksheet = $this->spreadsheet->getWorksheetWithColumnHeader($worksheetName);

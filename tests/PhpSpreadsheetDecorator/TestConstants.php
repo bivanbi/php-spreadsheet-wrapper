@@ -7,6 +7,7 @@ class TestConstants
     const TEST_XLS_FILENAME = 'tests/testsheet.xlsx';
     const COLUMN_HEADER_TEST_WORKSHEET_NAME = 'ColumnHeader';
     const COLUMN_HEADER_WITH_INTERLEAVE_TEST_WORKSHEET_NAME = 'ColumnHeaderWithInterleave';
+    const COLUMN_HEADER_WITH_NO_DATA_ROWS_TEST_WORKSHEET_NAME = 'ColumnHeaderWithNoData';
 
     const HEADER_ROW = 1;
     const HEADER_COLUMN = 'A';
