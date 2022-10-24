@@ -117,7 +117,6 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
     public function addColumn(string $columnName, string $columnAddress = null): void
     {
         $columnAddress = $this->getFirstColumnAddressWithoutHeader();
-        print('First unused column address: ' . $columnAddress . PHP_EOL);
         $this->worksheet->setCellValue($columnAddress . $this->headerRow, $columnName);
         $this->invalidateCache();
     }
