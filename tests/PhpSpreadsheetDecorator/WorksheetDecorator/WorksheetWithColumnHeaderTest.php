@@ -88,7 +88,7 @@ class WorksheetWithColumnHeaderTest extends TestCase
         }
     }
 
-    public function testAddColumn_viaAddColumnMethod()
+    public function testAddColumn()
     {
         $worksheet = $this->getWorksheet(TestConstants::COLUMN_HEADER_TEST_WORKSHEET_NAME);
         $expectedColumnMap = array_merge(TestConstants::HEADER_COLUMNS, ['E' => 'New Column']);
@@ -97,7 +97,15 @@ class WorksheetWithColumnHeaderTest extends TestCase
         self::assertEquals(array_flip($expectedColumnMap), $actualColumnMap);
     }
 
-    public function testAddColumn_viaAddColumnMethod_withInterleavedHeader()
+    public function testAddColumn_withDuplicateColumnName()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $worksheet = $this->getWorksheet(TestConstants::COLUMN_HEADER_TEST_WORKSHEET_NAME);
+        $existingColumnName = current(array_keys(current(TestConstants::COLUMN_HEADER_TEST_SHEET_EXPECTED_CONTENT)));
+        $worksheet->addColumn($existingColumnName);
+    }
+
+    public function testAddColumn_withInterleavedHeader()
     {
         $worksheet = $this->getWorksheet(TestConstants::COLUMN_HEADER_WITH_INTERLEAVE_TEST_WORKSHEET_NAME);
         $expectedColumnMap = array_merge(TestConstants::HEADER_COLUMNS, ['B' => 'New Column']);

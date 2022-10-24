@@ -101,7 +101,7 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
 
     protected function assertUniqueColumnName(string $columnName): void
     {
-        if (array_key_exists($columnName, ($this->columnMap ?? []))) {
+        if (array_key_exists($columnName, ($this->getColumnMap()))) {
             throw new InvalidArgumentException('Duplicate column name');
         }
     }
@@ -116,6 +116,7 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
      */
     public function addColumn(string $columnName, string $columnAddress = null): void
     {
+        $this->assertUniqueColumnName($columnName);
         $columnAddress = $this->getFirstColumnAddressWithoutHeader();
         $this->worksheet->setCellValue($columnAddress . $this->headerRow, $columnName);
         $this->invalidateCache();
