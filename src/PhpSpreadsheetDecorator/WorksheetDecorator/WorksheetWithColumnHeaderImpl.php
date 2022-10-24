@@ -50,7 +50,7 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
 
     public function getColumnNameByAddress(string $columnAddress): string
     {
-        $this->exceptOnInvalidColumnAddress($columnAddress);
+        $this->assertValidColumnAddress($columnAddress);
         return array_search($columnAddress, $this->getColumnMap());
     }
 
@@ -61,13 +61,13 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
 
     public function getCellByColumnNameAndRow(string $columnName, int $rowIndex): Cell
     {
-        $this->exceptOnColumnNameNotFound($columnName);
+        $this->assertValidColumnName($columnName);
         return $this->worksheet->getCell($this->getColumnAddressByName($columnName) . $rowIndex);
     }
 
     public function getColumnAddressByName(string $columnName): string
     {
-        $this->exceptOnColumnNameNotFound($columnName);
+        $this->assertValidColumnName($columnName);
         return $this->getColumnMap()[$columnName];
     }
 
@@ -80,26 +80,26 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
 
         foreach ($cellIterator as $index => $cell) {
             $name = $cell->getValue();
-            $this->exceptOnExistingColumnName($name);
+            $this->assertUniqueColumnName($name);
             $this->columnMap[$name] = $index;
         }
     }
 
-    protected function exceptOnColumnNameNotFound(string $columnName): void
+    protected function assertValidColumnName(string $columnName): void
     {
         if (!array_key_exists($columnName, $this->getColumnMap())) {
             throw new InvalidArgumentException('Column name not found');
         }
     }
 
-    protected function exceptOnInvalidColumnAddress(string $columnAddress): void
+    protected function assertValidColumnAddress(string $columnAddress): void
     {
         if (!$this->isValidColumnAddress($columnAddress)) {
             throw new InvalidArgumentException('No column name found for index');
         }
     }
 
-    protected function exceptOnExistingColumnName(string $columnName): void
+    protected function assertUniqueColumnName(string $columnName): void
     {
         if (array_key_exists($columnName, ($this->columnMap ?? []))) {
             throw new InvalidArgumentException('Duplicate column name');
@@ -136,7 +136,7 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
      */
     public function setCellValue(string $columnName, int $rowIndex, mixed $value = null): void
     {
-        $this->exceptOnColumnNameNotFound($columnName);
+        $this->assertValidColumnName($columnName);
         $map = $this->getColumnNameToIndexMap();
         $this->getWorksheet()->setCellValueByColumnAndRow($map[$columnName], $rowIndex, $value);
     }
