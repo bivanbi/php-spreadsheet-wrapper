@@ -1,18 +1,18 @@
 <?php
 
-namespace KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator;
+namespace KignOrg\PhpSpreadsheetWrapper\WorksheetWrapper;
 
 use InvalidArgumentException;
-use KignOrg\PhpSpreadsheetDecorator\SpreadsheetDecorator;
-use KignOrg\PhpSpreadsheetDecorator\SpreadsheetLoader;
-use KignOrg\PhpSpreadsheetDecorator\TestConstants;
+use KignOrg\PhpSpreadsheetWrapper\SpreadsheetLoader;
+use KignOrg\PhpSpreadsheetWrapper\SpreadsheetWrapper;
+use KignOrg\PhpSpreadsheetWrapper\TestConstants;
 use PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 use PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
 use PHPUnit\Framework\TestCase;
 
 class WorksheetWithColumnHeaderTest extends TestCase
 {
-    protected SpreadsheetDecorator $spreadsheet;
+    protected SpreadsheetWrapper $spreadsheet;
 
     /**
      * @throws ReaderException

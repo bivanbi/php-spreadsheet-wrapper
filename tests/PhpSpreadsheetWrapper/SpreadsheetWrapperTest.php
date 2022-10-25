@@ -1,14 +1,14 @@
 <?php
 
-namespace KignOrg\PhpSpreadsheetDecorator;
+namespace KignOrg\PhpSpreadsheetWrapper;
 
 use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
 use PHPUnit\Framework\TestCase;
 
-class SpreadsheetDecoratorTest extends TestCase
+class SpreadsheetWrapperTest extends TestCase
 {
-    protected SpreadsheetDecorator $spreadsheet;
+    protected SpreadsheetWrapper $spreadsheet;
     protected string $tempFileName;
 
     /**
@@ -26,7 +26,6 @@ class SpreadsheetDecoratorTest extends TestCase
         parent::tearDown();
         unlink($this->tempFileName);
     }
-
 
     public function testGetWorksheetWithColumnHeader_withInvalidSheetName()
     {

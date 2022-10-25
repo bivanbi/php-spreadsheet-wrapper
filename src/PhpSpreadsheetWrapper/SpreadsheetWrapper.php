@@ -1,10 +1,10 @@
 <?php
 
-namespace KignOrg\PhpSpreadsheetDecorator;
+namespace KignOrg\PhpSpreadsheetWrapper;
 
-use KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator\WorksheetWithColumnHeader;
+use KignOrg\PhpSpreadsheetWrapper\WorksheetWrapper\WorksheetWithColumnHeader;
 
-interface SpreadsheetDecorator
+interface SpreadsheetWrapper
 {
     public function getWorksheetWithColumnHeader(string $name): WorksheetWithColumnHeader;
 

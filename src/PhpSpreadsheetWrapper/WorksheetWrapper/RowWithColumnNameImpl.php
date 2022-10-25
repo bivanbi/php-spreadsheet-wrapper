@@ -1,6 +1,6 @@
 <?php
 
-namespace KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator;
+namespace KignOrg\PhpSpreadsheetWrapper\WorksheetWrapper;
 
 use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 use PhpOffice\PhpSpreadsheet\Worksheet\RowCellIterator;

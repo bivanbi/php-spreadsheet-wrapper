@@ -1,15 +1,15 @@
 <?php
 
-namespace KignOrg\PhpSpreadsheetDecorator;
+namespace KignOrg\PhpSpreadsheetWrapper;
 
 use InvalidArgumentException;
-use KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator\WorksheetWithColumnHeader;
-use KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator\WorksheetWithColumnHeaderImpl;
+use KignOrg\PhpSpreadsheetWrapper\WorksheetWrapper\WorksheetWithColumnHeader;
+use KignOrg\PhpSpreadsheetWrapper\WorksheetWrapper\WorksheetWithColumnHeaderImpl;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class SpreadsheetDecoratorImpl implements SpreadsheetDecorator
+class SpreadsheetWrapperImpl implements SpreadsheetWrapper
 {
     protected Spreadsheet $spreadsheet;
 

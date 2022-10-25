@@ -1,6 +1,6 @@
 <?php
 
-namespace KignOrg\PhpSpreadsheetDecorator;
+namespace KignOrg\PhpSpreadsheetWrapper;
 
 class TestConstants
 {

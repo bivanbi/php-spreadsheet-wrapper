@@ -1,6 +1,6 @@
 <?php
 
-namespace KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator;
+namespace KignOrg\PhpSpreadsheetWrapper\WorksheetWrapper;
 
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
