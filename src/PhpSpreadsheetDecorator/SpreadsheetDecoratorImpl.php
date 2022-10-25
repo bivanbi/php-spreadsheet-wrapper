@@ -6,6 +6,8 @@ use InvalidArgumentException;
 use KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator\WorksheetWithColumnHeader;
 use KignOrg\PhpSpreadsheetDecorator\WorksheetDecorator\WorksheetWithColumnHeaderImpl;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Exception;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class SpreadsheetDecoratorImpl implements SpreadsheetDecorator
 {
@@ -23,5 +25,14 @@ class SpreadsheetDecoratorImpl implements SpreadsheetDecorator
             throw new InvalidArgumentException("Failed to get sheet by name");
         }
         return new WorksheetWithColumnHeaderImpl($this->spreadsheet->getSheetByName($name));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function saveToFile(string $filename): void
+    {
+        $writer = new Xlsx($this->spreadsheet);
+        $writer->save($filename);
     }
 }
