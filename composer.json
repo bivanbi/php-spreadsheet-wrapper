@@ -4,7 +4,7 @@
   "type": "library",
   "license": "GPL-3.0-or-later",
   "require": {
-    "php": "^7.4 || ^8.0",
+    "php": "^8.1",
     "phpoffice/phpspreadsheet": ">=1.22.0"
   },
   "require-dev": {
