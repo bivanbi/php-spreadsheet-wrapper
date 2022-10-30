@@ -45,4 +45,15 @@ interface WorksheetWithColumnHeader
      * @param string|null $columnAddress
      */
     public function addColumn(string $columnName, string $columnAddress = null): void;
+
+    /**
+     * Fill worksheet with data array of associative arrays (dictionaries, 'rows'), beginning at $startRow.
+     * If $startRow is omitted, if defaults to 'first data row'. The 'row' index in the input data
+     * is not used, but the order is maintained. If sheet contains data in the given row range, it will
+     * be overwritten, but only the columns that are defined in the actual input data.
+     *
+     * @param array $data
+     * @param int|null $startRow
+     */
+    public function fillWorksheet(array $data, int $startRow = null): void;
 }

@@ -137,6 +137,41 @@ class WorksheetWithColumnHeaderTest extends TestCase
         }
     }
 
+    public function testFillWorksheet_withInvalidColumnName()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $worksheet = $this->getWorksheet(TestConstants::COLUMN_HEADER_WITH_NO_DATA_ROWS_TEST_WORKSHEET_NAME);
+        $worksheet->fillWorksheet([['invalid header' => 'some data']]);
+    }
+
+    public function testFillWorksheet_withValidData()
+    {
+        $worksheet = $this->getWorksheet(TestConstants::COLUMN_HEADER_WITH_NO_DATA_ROWS_TEST_WORKSHEET_NAME);
+        $worksheet->fillWorksheet(array_values(TestConstants::COLUMN_HEADER_TEST_SHEET_EXPECTED_CONTENT));
+
+        $rowIterator = $worksheet->getRowIterator();
+        foreach ($rowIterator as $row) {
+            $expected = TestConstants::COLUMN_HEADER_TEST_SHEET_EXPECTED_CONTENT[$row->getRowIndex()];
+            $actual = $row->asArray();
+            self::assertEquals($expected, $actual);
+        }
+    }
+
+    public function testFillWorksheet_withValidData_withRowIndex()
+    {
+        $firstRowIndex = 10;
+        $worksheet = $this->getWorksheet(TestConstants::COLUMN_HEADER_WITH_NO_DATA_ROWS_TEST_WORKSHEET_NAME);
+        $worksheet->fillWorksheet(array_values(TestConstants::COLUMN_HEADER_TEST_SHEET_EXPECTED_CONTENT), 10);
+        $expectedData = array_values(TestConstants::COLUMN_HEADER_TEST_SHEET_EXPECTED_CONTENT);
+        $rowIterator = $worksheet->getRowIterator($firstRowIndex);
+        foreach ($rowIterator as $row) {
+            $relativeRowIndex = $row->getRowIndex() - $firstRowIndex;
+            $expected = $expectedData[$relativeRowIndex];
+            $actual = $row->asArray();
+            self::assertEquals($expected, $actual);
+        }
+    }
+
     private function getWorksheet(string $worksheetName): WorksheetWithColumnHeader
     {
         $worksheet = $this->spreadsheet->getWorksheetWithColumnHeader($worksheetName);

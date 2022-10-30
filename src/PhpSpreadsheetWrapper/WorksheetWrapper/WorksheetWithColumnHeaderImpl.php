@@ -122,6 +122,18 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
         $this->invalidateCache();
     }
 
+
+    /**
+     * @throws Exception
+     */
+    public function fillWorksheet(array $data, int $startRow = null): void
+    {
+        $rowIndex = $startRow ?: $this->firstDataRow;
+        foreach ($data as $rowArray) {
+            $this->updateRow($rowIndex++, $rowArray);
+        }
+    }
+
     /**
      * @throws Exception
      */
@@ -131,7 +143,6 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
             $this->setCellValue($columnName, $rowIndex, $value);
         }
     }
-
     /**
      * @throws Exception
      */
@@ -141,7 +152,6 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
         $map = $this->getColumnNameToIndexMap();
         $this->getWorksheet()->setCellValueByColumnAndRow($map[$columnName], $rowIndex, $value);
     }
-
     /**
      * @throws Exception
      */
@@ -188,7 +198,6 @@ class WorksheetWithColumnHeaderImpl implements WorksheetWithColumnHeader
         for ($i = 1; in_array($i, $indices); $i++) ;
         return $i;
     }
-
     protected function invalidateCache(): void
     {
         $this->columnMap = null;
