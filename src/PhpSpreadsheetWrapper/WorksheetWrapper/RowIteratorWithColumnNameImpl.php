@@ -4,6 +4,7 @@ namespace KignOrg\PhpSpreadsheetWrapper\WorksheetWrapper;
 
 use Iterator;
 use PhpOffice\PhpSpreadsheet\Worksheet\RowIterator;
+use ReturnTypeWillChange;
 
 /**
  * @implements Iterator<int, RowWithColumnName>
@@ -24,12 +25,12 @@ class RowIteratorWithColumnNameImpl implements RowIteratorWithColumnName
         return new RowWithColumnNameImpl($this->worksheetWithColumnHeader, $this->rowIterator->current());
     }
 
-    public function next()
+    #[ReturnTypeWillChange] public function next()
     {
         $this->rowIterator->next();
     }
 
-    public function key()
+    public function key(): int
     {
         return $this->rowIterator->key();
     }
@@ -39,7 +40,7 @@ class RowIteratorWithColumnNameImpl implements RowIteratorWithColumnName
         return $this->rowIterator->valid();
     }
 
-    public function rewind()
+    #[ReturnTypeWillChange] public function rewind()
     {
         $this->rowIterator->rewind();
     }
